@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -15,19 +15,41 @@ import ListView from '../components/ListView';
 import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
 import {ModalTitle, ModalContent, BottomModal} from 'react-native-modals';
 import Example from '../components/Example';
+import db from '../config';
 
 const ListListing = param => {
   return <ListView props={param} />;
 };
 
-const onRefresh = () => {};
+const onRefresh = async () => {
+ 
+};
 
 function Listing(props) {
   const {navigation} = props;
   const [isModalVisible, setModalVisible] = useState(false);
+  const [lists,setLists] = useState([])
+  const fetchCollections = async()=>{
+    //const response = db.collection('root_collection').doc('Todo');
+    //const data = await response.get();
+    
+    db.collection("root_collection/tourism/tourism").get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          setLists([...lists,doc.data()])
+      });
+    });
+
+  }
+  useEffect(() => {
+    fetchCollections();
+  }, [])
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+  console.log(lists)
 
   return (
     <View style={styles.container}>
