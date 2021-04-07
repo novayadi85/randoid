@@ -1,0 +1,12 @@
+{
+  "name": "dsid",
+  "displayName": "dsid",
+  "expo": {
+    "name": "dsid",
+    "slug": "dsid",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
