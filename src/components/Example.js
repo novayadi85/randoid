@@ -1,13 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useState, useEffect , useContext } from 'react';
 import { ScrollView, StyleSheet, View, Button } from 'react-native';
 import {
   Dropdown,
   GroupDropdown,
   MultiselectDropdown,
 } from 'sharingan-rn-modal-dropdown';
-
+import { Context } from './Provider';
 export const data = [
   {
     value: '1',
@@ -20,117 +20,29 @@ export const data = [
   },
   {
     value: '2',
-    label: 'Garrett Winters',
-    employee_salary: '170750',
-    employee_age: '63',
+    label: 'Tiger Nixon',
+    employee_salary: '320800',
+    employee_age: '61',
     avatarSource: {
-      uri: 'https://img.icons8.com/color/344/circled-user-male-skin-type-5.png',
+        uri: 'https://img.icons8.com/color/344/circled-user-male-skin-type-5.png',
     },
-  },
-  {
-    value: '3',
-    label: 'Ashton Cox',
-    employee_salary: '86000',
-    employee_age: '66',
-    avatarSource: {
-      uri: 'https://img.icons8.com/color/344/circled-user-male-skin-type-5.png',
-    },
-  },
-  {
-    value: '4',
-    label: 'Cedric Kelly',
-    employee_salary: '433060',
-    employee_age: '22',
-    avatarSource: {
-      uri: 'https://img.icons8.com/color/344/circled-user-male-skin-type-5.png',
-    },
-  },
+  }
 ];
 
-export const groupData = [
+
+export const locations = [
   {
-    title: 'Apple',
-    data: [
-      {
-        value: '233',
-        label: 'iPhone SE(2020)',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/2x/iphone-x.png',
-        },
-      },
-      {
-        value: '242',
-        label: 'iPhone 11',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/2x/iphone-x.png',
-        },
-      },
-      {
-        value: '24w',
-        label: 'iPhone 12',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/2x/iphone-x.png',
-        },
-      },
-      {
-        value: '99',
-        label: 'iPhone 12 Mini',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/2x/iphone-x.png',
-        },
-      },
-    ],
+    value: '1',
+    label: 'Denpasar',
   },
   {
-    title: 'Google',
-    data: [
-      {
-        value: '19',
-        label: 'Pixel 3a',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/344/android.png',
-        },
-      },
-      {
-        value: '20',
-        label: 'Pixel 3',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/344/android.png',
-        },
-      },
-      {
-        value: '21',
-        label: 'Pixel 3 xl',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/344/android.png',
-        },
-      },
-      {
-        value: '16',
-        label: 'Pixel 4',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/344/android.png',
-        },
-      },
-      {
-        value: '17',
-        label: 'Pixel 4a',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/344/android.png',
-        },
-      },
-      {
-        value: '18',
-        label: 'Pixel 5',
-        avatarSource: {
-          uri: 'https://img.icons8.com/cute-clipart/344/android.png',
-        },
-      },
-    ],
-  },
+    value: '2',
+    label: 'Badung',
+  }
 ];
 
-const Example = () => {
+const FilterList = (props) => {
+  const { state: db } = props
   const [valueMS, setValueMS] = useState('');
   const [valueSS, setValueSS] = useState('');
   const [valueGS, setValueGS] = useState('');
@@ -154,7 +66,7 @@ const Example = () => {
       <ScrollView showsHorizontalScrollIndicator={false}>
         <View style={styles.container}>
           <MultiselectDropdown
-            label="Multi select with avatar chip outlined"
+            label="Select category of Tourism"
             data={data}
             enableSearch
             enableAvatar
@@ -165,25 +77,17 @@ const Example = () => {
         </View>
         <View style={styles.container}>
           <Dropdown
-            label="Simple dropdown"
-            data={data}
+            label="Select Location"
+            data={locations}
             enableSearch
             value={valueSS}
             onChange={onChangeSS}
           />
         </View>
-        <View style={styles.container}>
-          <GroupDropdown
-            label="Group dropdown with avatar"
-            data={groupData}
-            enableSearch
-            enableAvatar
-            value={valueGS}
-            onChange={onChangeGS}
-          />
-        </View>
         <View style={[styles.container]}>
-            <Button title="Apply"/>
+          <Button onPress={() => {
+            aCallback([6,4,5,7])
+          }} title="Apply"/>
         </View>
        
       </ScrollView>
@@ -216,4 +120,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Example;
+export default FilterList;

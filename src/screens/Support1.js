@@ -1,26 +1,32 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {StyleSheet, View, Text, Image, ScrollView, RefreshControl} from 'react-native';
+import {StyleSheet, View, Text, Image, ScrollView} from 'react-native';
 import Footer from '../components/Footer';
 import HeaderWithActionButton from '../components/HeaderWithActionButton';
-import {ListItem, Divider} from 'react-native-elements';
-const items = [
-{
-    title: 'Bagaimana Cara kerja aplikasi ini?',
-    link: '',
-},
-{
-    title: 'Apakah aplikasi ini bisa di install di android dibawah versi 6.0 ?',
-    link: '',
-},
-];
+import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import HTML from 'react-native-render-html';
+
+const myPlace = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Point',
+        coordinates: [36.78825, -120.4324],
+      },
+    },
+  ],
+};
+
 function Support(props) {
   const {navigation} = props;
   return (
     <View style={styles.container}>
       <HeaderWithActionButton
         style={styles.HeaderWithActionButton}
-        title={'Support and Help'}
+        title={'Taman ayun - Denpasar'}
         navigation={navigation}
       />
       <ScrollView style={[styles.boxCardHolder, props.style]}>
@@ -102,24 +108,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     lineHeight: 16,
   },
-  boxCardHolder: {
-    backgroundColor: '#fff',
-    position: 'absolute',
-    width: '100%',
-    top: 65,
-  },
-  selamatDatang: {
-    fontFamily: 'roboto-regular',
-    color: '#121212',
-    fontSize: 22,
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 0,
-    backgroundColor: '#fff',
-    paddingTop: 10,
-    paddingBottom: 20,
-    elevation: 2,
-  },
   image: {
     maxHeight: 300,
   },
@@ -163,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Support;
+export default Detail;

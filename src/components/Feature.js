@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Dimensions
 } from 'react-native';
+import db from '../config';
 const {width} = Dimensions.get('window')
 const FeatureList = ({
   values,
@@ -23,7 +24,7 @@ const FeatureList = ({
               source={require('../assets/images/cardImage4.png')}
               style={styles.cardItemImagePlace}
             />
-            <Text style={styles.buttonLabel}>{value}</Text>
+            <Text style={styles.buttonLabel}>{value.title}</Text>
           </View>
       ))}
     </ScrollView>
@@ -32,26 +33,33 @@ const FeatureList = ({
 
 const Featured = (props) => {
   const [flexDirection, setflexDirection] = useState('column');
-  const { headline } = props
+  const [lists, setLists] = useState([]);
+  const { headline, type } = props;
+
+  const doc = (type == 'toptourism' || type == 'recomended')  ? 'tourism' : type
+
+  const fetchCollections = async(param) => {
+    const docs = [];
+    const limit = (param === 'category') ? 5 : 6
+    db.collection(`root_collection/tourism/${param}`).orderBy('title', 'desc').limit(limit).get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          setLists([...docs, doc.data()])
+      })
+    })
+  }
+
+  useEffect(() => {
+    setLists([])
+    fetchCollections(doc);
+  }, [])
+
   return (
     <View style={styles.scrollContainer}>
       <Text style={styles.headline}>{headline}</Text>
       <FeatureList
         label="flexDirection"
-        values={[
-          'Adventure',
-          'History',
-          'Recreation',
-          'Cultural tourism',
-          'Garden tourism',
-          'Medical tourism',
-          'Virtual tour',
-          'Religious tourism‎',
-          'Industrial tourism‎ ',
-          'Cooking tourism‎',
-          'Walking tourism‎ ',
-          'Science tourism',
-        ]}
+        values={lists}
         selectedValue={flexDirection}
         setSelectedValue={setflexDirection}
       />

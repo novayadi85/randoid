@@ -5,7 +5,11 @@ import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommun
 export default function ListView(params) {
   const {props} = params;
   const {item} = props;
-
+  const {file} = item || { file : {src : false}}
+  // console.log(item)
+  let img = {uri: file.src} 
+  if(!file) img = require('../assets/images/cardImage4.png')
+  
   return (
     <View style={[styles.container, params.style]}>
       <View style={styles.cardBody}>
@@ -13,21 +17,21 @@ export default function ListView(params) {
           style={styles.imageHolder}
           onPress={() => props.navigation.navigate('Detail')}>
           <Image
-            source={require('../assets/images/cardImage4.png')}
+            source={img}
             style={styles.cardItemImagePlace}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={() => props.navigation.navigate('Detail')}>
-          <Text style={styles.titleStyle}>{item.header}</Text>
-          <Text style={styles.subtitleStyle}>{item.caption}</Text>
+          <Text style={styles.titleStyle}>{item.title}</Text>
+          <Text style={styles.subtitleStyle}>{'subtitle write here'}</Text>
           <Text style={styles.actionButton}>
             <MaterialCommunityIconsIcon
               name="map-marker"
               style={styles.inputLeftIcon}
             />{' '}
-            {item.distance}
+            {item.distance ? item.distance : '100 km'}
           </Text>
         </TouchableOpacity>
       </View>

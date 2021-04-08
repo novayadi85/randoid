@@ -38,11 +38,7 @@ const HeaderWithActionButton = props => {
           </Text>
         </View>
         <View style={styles.rightWrapper}>
-          <TouchableOpacity
-            style={styles.rightIconButton}
-            onPress={() => handleSearchBar()}>
-            <Icon name="search" style={styles.rightIcon} />
-          </TouchableOpacity>
+          
         </View>
       </View>
       {showSearchBar ? <HeaderSearch /> : <Text />}
@@ -76,8 +72,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   textWrapper: {
-    flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
   category: {

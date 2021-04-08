@@ -7,10 +7,33 @@ const firebaseConfig = {
     storageBucket: "hello-world-9a3ca.appspot.com",
     messagingSenderId: "933690374825",
     appId: "1:933690374825:web:5f8b18c9ff1a7d570887b8"
-  };
+};
 
-const app = Firebase.initializeApp(firebaseConfig);
-const db = app.firestore();
-db.settings({experimentalForceLongPolling: true});
 
-export default db;
+export default !Firebase.apps.length 
+  ? Firebase.initializeApp(firebaseConfig).firestore({experimentalForceLongPolling: true})
+  : Firebase.app().firestore();
+
+
+
+//db.settings({experimentalForceLongPolling: true});
+/*
+nSQL().createDatabase({
+  id: "tourism-db",
+  mode: "TEMP", 
+  tables: [
+    {
+      name: "listings",
+      model: {
+        "id:uuid": {pk: true},
+        "data:string": {},
+      }
+    }
+  ]
+}).then(() => {
+  // ready to query!
+}).catch(() => {
+  // ran into a problem
+})
+
+*/

@@ -5,6 +5,7 @@ import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommun
 import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
 
 function Footer(props) {
+  const { navigation : { state} } =  props
   return (
     <View style={[styles.container, props.style]}>
       <TouchableOpacity
@@ -15,7 +16,7 @@ function Footer(props) {
           style={[
             styles.icon,
             {
-              color: props.active ? '#007AFF' : '#616161',
+              color: state.routeName == 'App' ? '#007AFF' : '#616161',
             },
           ]}
         />
@@ -23,7 +24,7 @@ function Footer(props) {
           style={[
             styles.home,
             {
-              color: props.active ? '#007AFF' : '#9E9E9E',
+              color: state.routeName == 'App' ? '#007AFF' : '#9E9E9E',
             },
           ]}>
           Home
@@ -32,26 +33,38 @@ function Footer(props) {
       <TouchableOpacity
         onPress={() => props.navigation.navigate('Listing')}
         style={styles.btnWrapper3}>
-        <MaterialIconsIcon name="lightbulb-outline" style={styles.icon2} />
-        <Text style={styles.about}>Listing</Text>
+        <MaterialIconsIcon name="lightbulb-outline" style={[styles.icon2 , {
+              color: state.routeName == 'Listing' ? '#007AFF' : '#9E9E9E',
+        }]} />
+        <Text style={[styles.about, {
+              color: state.routeName == 'Listing' ? '#007AFF' : '#9E9E9E',
+        }]}>Listing</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => props.navigation.navigate('About')}
         style={styles.btnWrapper2}>
         <MaterialCommunityIconsIcon
           name="radiobox-marked"
-          style={styles.icon1}
+          style={[styles.icon1, {
+            color: state.routeName == 'About' ? '#007AFF' : '#9E9E9E',
+          }]}
         />
-        <Text style={styles.listing}>About</Text>
+        <Text style={[styles.listing, {
+            color: state.routeName == 'About' ? '#007AFF' : '#9E9E9E',
+          }]}>About</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => props.navigation.navigate('Support')}
         style={styles.btnWrapper4}>
         <MaterialCommunityIconsIcon
           name="checkbox-blank-circle"
-          style={styles.icon3}
+          style={[styles.icon3, {
+            color: state.routeName == 'Support' ? '#007AFF' : '#9E9E9E',
+          }]}
         />
-        <Text style={styles.setting}>Support</Text>
+        <Text style={[styles.setting, {
+            color: state.routeName == 'Support' ? '#007AFF' : '#9E9E9E',
+          }]}>Support</Text>
       </TouchableOpacity>
     </View>
   );

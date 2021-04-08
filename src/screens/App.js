@@ -9,13 +9,17 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Footer from '../components/Footer';
-import FlexDirectionBasics from '../components/FlexDirectionBasics';
 import Featured from '../components/Feature';
 function App(props) {
   const {navigation} = props;
   return (
     <View style={styles.container}>
       <ScrollView style={styles.boxCardHolder}>
+        <View style={styles.Timer}>
+          <Text style={styles.TimerText}>
+            Saturday, 16 November 1985
+          </Text>
+        </View>
         <Image
           source={require('../assets/images/03978901-ea26-4003-8568-1b83282ea587.jpg')}
           style={styles.image}
@@ -27,9 +31,8 @@ function App(props) {
         </View>
         <View style={styles.FlexDirectionBasics}>
           <ActivityIndicator />
-          <Featured headline={'Tourism Category'}/>
-          <Featured headline={'Top Tourism'}/>
-          <Featured headline={'Recomended Tourism'}/>
+          <Featured type={'category'} headline={'Tourism Category'}/>
+          <Featured type={'toptourism'} headline={'Top Tourism'}/>
         </View>
       </ScrollView>
       <Footer navigation={navigation} style={styles.footer} />
@@ -57,6 +60,21 @@ const styles = StyleSheet.create({
     shadowRadius: 1.2,
     elevation: 3,
   },
+  Timer: {
+    position: 'absolute',
+    zIndex: 1000,
+    padding: 10,
+    margin: 'auto',
+    justifyContent: 'space-between',
+  },  
+  TimerText: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+    fontFamily:'roboto'
+  },
   boxCardHolder: {
     backgroundColor: '#fff',
   },
@@ -82,7 +100,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: '100%',
-    height: 200,
+    height: 320,
     position: 'relative',
     flex: 0.1,
   },

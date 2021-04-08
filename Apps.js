@@ -7,13 +7,12 @@ import App from './src/screens/App';
 import Category from './src/screens/Category';
 import Listing from './src/screens/Listing';
 import Support from './src/screens/Support';
+import Provider from './src/components/Provider';
 
 const DrawerNavigation = createDrawerNavigator({
-  App: App,
   About: About,
   Support: Support,
   Listing: Listing,
-  Category: Category,
 });
 
 const StackNavigation = createStackNavigator(
@@ -35,7 +34,7 @@ const StackNavigation = createStackNavigator(
 const AppContainer = createAppContainer(StackNavigation);
 
 function Apps() {
-  return <AppContainer />;
+  return (<Provider><AppContainer /></Provider>);
 }
 
 export default Apps;
