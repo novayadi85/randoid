@@ -1,6 +1,6 @@
 {
   "name": "dsid",
-  "displayName": "dsid",
+  "displayName": "Bali Tourism",
   "expo": {
     "name": "dsid",
     "slug": "dsid",
@@ -8,5 +8,10 @@
     "assetBundlePatterns": [
       "**/*"
     ]
+  },
+  "splash": {
+    "image": "./assets/images/logo.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#000000"
   }
 }

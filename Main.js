@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useContext } from 'react';
+import React, { useState, useEffect} from 'react';
 import App from './Apps';
 import {ThemeProvider} from 'react-native-elements';
 import {DefaultTheme} from '@react-navigation/native';
@@ -6,6 +6,7 @@ import {ModalPortal} from 'react-native-modals';
 import { LogBox, ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import _ from 'lodash';
 import db from './src/config';
+import { position } from './src/utils/helper';
 import { nSQL } from '@nano-sql/core';
 
 LogBox.ignoreLogs(['Setting a timer']);
@@ -35,10 +36,28 @@ nSQL().createDatabase({
         "id:uuid": {pk: true},
         "data:object": {},
       }
+    },
+    {
+      name: "position",
+      model: {
+        "id:uuid": {pk: true},
+        "data:object": {},
+      }
     }
   ]
 }).then(() => {
   nSQL("listings").query("delete").exec();
+  nSQL("position").query("delete").exec().then(async() => {
+      await position().then((res) => {
+        const {latitude, longitude} = res;
+        nSQL("position").query('upsert', {
+          data: {
+            latitude, 
+            longitude
+          }
+        }).exec();
+      })
+  });
 })
 
 const Main = () => {

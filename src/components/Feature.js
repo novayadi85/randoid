@@ -13,18 +13,23 @@ import db from '../config';
 const {width} = Dimensions.get('window')
 const FeatureList = ({
   values,
-  selectedValue,
-  setSelectedValue,
+  navigation
 }) => (
   <View style={{padding: 10, flex: 1}}>
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       {values.map((value, index) => (
           <View key={index.toString()} style={styles.center}>
-            <Image
-              source={require('../assets/images/cardImage4.png')}
-              style={styles.cardItemImagePlace}
-            />
-            <Text style={styles.buttonLabel}>{value.title}</Text>
+              <TouchableOpacity onPress={() => {
+                  navigation.navigate('Listing', { item : value})}}>
+                  <View>
+                  <Image
+                    source={require('../assets/images/cardImage4.png')}
+                    style={styles.cardItemImagePlace}
+                  />
+                  <Text style={styles.buttonLabel}>{value.title}</Text>
+                  </View>
+              </TouchableOpacity>
+            
           </View>
       ))}
     </ScrollView>
@@ -34,16 +39,16 @@ const FeatureList = ({
 const Featured = (props) => {
   const [flexDirection, setflexDirection] = useState('column');
   const [lists, setLists] = useState([]);
-  const { headline, type } = props;
-
+  const { headline, type , navigation} = props;
   const doc = (type == 'toptourism' || type == 'recomended')  ? 'tourism' : type
-
   const fetchCollections = async(param) => {
     const docs = [];
     const limit = (param === 'category') ? 5 : 6
     db.collection(`root_collection/tourism/${param}`).orderBy('title', 'desc').limit(limit).get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
+          // const { data: d} = doc
+          // d.image = (d.file.src) ? false : require('../assets/images/cardImage4.png')
           setLists([...docs, doc.data()])
       })
     })
@@ -60,6 +65,7 @@ const Featured = (props) => {
       <FeatureList
         label="flexDirection"
         values={lists}
+        navigation={navigation}
         selectedValue={flexDirection}
         setSelectedValue={setflexDirection}
       />

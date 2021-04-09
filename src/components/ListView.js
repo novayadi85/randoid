@@ -1,21 +1,47 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, Image, StyleSheet, Text} from 'react-native';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { nSQL } from '@nano-sql/core';
+import { getDistance } from '../utils/helper';
 export default function ListView(params) {
+  const [location, setLocation] = useState({});
+  const [distance, setDistance] = useState(1);
   const {props} = params;
   const {item} = props;
   const {file} = item || { file : {src : false}}
-  // console.log(item)
-  let img = {uri: file.src} 
-  if(!file) img = require('../assets/images/cardImage4.png')
-  
+  const {src} = file
+  useEffect(() => {
+    nSQL("position").query('select').exec().then(result => {
+      const {coordinate} = item
+      if(coordinate) {
+        result.forEach(function(res){
+          const t = getDistance(
+            data.latitude,
+            data.longitude,
+            coordinate.latitude,
+            coordinate.longitude,
+            'K',
+          )
+        });
+        setDistance(t)
+      }
+      
+      setLocation(result)
+    })
+  }, [item])
+
+  const img = (src) ? {uri: src}  : require('../assets/images/cardImage4.png')
+
   return (
     <View style={[styles.container, params.style]}>
       <View style={styles.cardBody}>
         <TouchableOpacity
           style={styles.imageHolder}
-          onPress={() => props.navigation.navigate('Detail')}>
+          onPress={() => props.navigation.navigate('Detail', {
+            item: item,
+            distance: distance,
+          })}>
           <Image
             source={img}
             style={styles.cardItemImagePlace}
@@ -23,7 +49,10 @@ export default function ListView(params) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => props.navigation.navigate('Detail')}>
+          onPress={() => props.navigation.navigate('Detail', {
+            item: item,
+            distance: distance,
+          })}>
           <Text style={styles.titleStyle}>{item.title}</Text>
           <Text style={styles.subtitleStyle}>{'subtitle write here'}</Text>
           <Text style={styles.actionButton}>
@@ -31,7 +60,7 @@ export default function ListView(params) {
               name="map-marker"
               style={styles.inputLeftIcon}
             />{' '}
-            {item.distance ? item.distance : '100 km'}
+            {distance ? `${distance} KM` : '100 KM'}
           </Text>
         </TouchableOpacity>
       </View>

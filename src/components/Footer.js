@@ -16,7 +16,7 @@ function Footer(props) {
           style={[
             styles.icon,
             {
-              color: state.routeName == 'App' ? '#007AFF' : '#616161',
+              color: state.routeName == 'App' ||  state.routeName == 'Home' ? '#007AFF' : '#616161',
             },
           ]}
         />
@@ -24,7 +24,7 @@ function Footer(props) {
           style={[
             styles.home,
             {
-              color: state.routeName == 'App' ? '#007AFF' : '#9E9E9E',
+              color: state.routeName == 'App' ||  state.routeName == 'Home' ? '#007AFF' : '#9E9E9E',
             },
           ]}>
           Home
@@ -34,10 +34,10 @@ function Footer(props) {
         onPress={() => props.navigation.navigate('Listing')}
         style={styles.btnWrapper3}>
         <MaterialIconsIcon name="lightbulb-outline" style={[styles.icon2 , {
-              color: state.routeName == 'Listing' ? '#007AFF' : '#9E9E9E',
+              color: state.routeName == 'Listing' ||  state.routeName == 'Detail' ? '#007AFF' : '#9E9E9E',
         }]} />
         <Text style={[styles.about, {
-              color: state.routeName == 'Listing' ? '#007AFF' : '#9E9E9E',
+              color: state.routeName == 'Listing' ||  state.routeName == 'Detail'  ? '#007AFF' : '#9E9E9E',
         }]}>Listing</Text>
       </TouchableOpacity>
       <TouchableOpacity

@@ -7,17 +7,20 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import Footer from '../components/Footer';
 import Featured from '../components/Feature';
+import {today} from '../utils/helper.js'
 function App(props) {
   const {navigation} = props;
+  const whatToday = today();
   return (
     <View style={styles.container}>
       <ScrollView style={styles.boxCardHolder}>
         <View style={styles.Timer}>
           <Text style={styles.TimerText}>
-            Saturday, 16 November 1985
+            {whatToday}
           </Text>
         </View>
         <Image
@@ -31,8 +34,13 @@ function App(props) {
         </View>
         <View style={styles.FlexDirectionBasics}>
           <ActivityIndicator />
-          <Featured type={'category'} headline={'Tourism Category'}/>
-          <Featured type={'toptourism'} headline={'Top Tourism'}/>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('Listing')}}>
+            <Text style={styles.viewAll}>
+            View all
+            </Text>
+          </TouchableOpacity>
+          <Featured navigation={navigation} type={'category'} headline={'Tourism Category'}/>
         </View>
       </ScrollView>
       <Footer navigation={navigation} style={styles.footer} />
@@ -43,6 +51,13 @@ function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  viewAll: {
+    fontSize: 14,
+    color: 'orange',
+    position: 'absolute',
+    right: 30,
+    top: 10
   },
   header: {
     backgroundColor: '#fff',

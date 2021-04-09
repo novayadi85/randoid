@@ -6,17 +6,7 @@ import HeaderWithActionButton from '../components/HeaderWithActionButton';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HTML from 'react-native-render-html';
 import MapView, {Marker, Geojson} from 'react-native-maps';
-const content = `Pura Taman Ayun Mengwi, berlokasi di Jalan Ayodya, Kecamatan
-Mengwi, Kabupaten Badung, Bali. Jika anda berangkat dari kawasan
-tempat wisata Seminyak, anda harus menempuh jarak sekitar 25
-kilometer ke arah jalan Kerobokan, dengan waktu tempuh sekitar 1
-jam 10 menit, jika tidak terjadi kemacetan lalu lintas jalan raya.
-Bila tidak membawa kendaraan pribadi, anda dapat memanfaatkan
-angkutan umum jurusan Denpasar – Singaraja atau Denpasar –
-Bedugul. Kemudian anda dapat turun di persimpangan jalan, di Desa
-Mengwi dan melanjutkan perjalanan menuju lokasi, dengan berjalan
-kaki sekitar 250 meter. Untuk memudahkan anda menemukan lokasi
-dari Taman Ayun, mohon gunakan peta di bawah ini!`;
+const content = ``;
 
 const myPlace = {
   type: 'FeatureCollection',
@@ -33,12 +23,14 @@ const myPlace = {
 };
 
 function Detail(props) {
-  const {navigation} = props;
-  return (
+  const {navigation, navigation : { state} } = props;
+  const { params , params: { item, distance}} = state;
+
+  return ( 
     <View style={styles.container}>
       <HeaderWithActionButton
         style={styles.HeaderWithActionButton}
-        title={'Taman ayun - Denpasar'}
+        title={item.title}
         navigation={navigation}
       />
       <View style={styles.Detail}>
@@ -48,17 +40,17 @@ function Detail(props) {
             source={require('../assets/images/cardImage4.png')}
           />
           <View style={[styles.wrapper]}>
-            <Text style={styles.title}>Taman ayun Mengwitani - Denpasar</Text>
+            <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.subTitle}>Subtitle here</Text>
             <Text style={styles.actionButton}>
               <MaterialCommunityIconsIcon
                 name="map-marker"
                 style={styles.inputLeftIcon}
               />{' '}
-              12.22 km
+              {`${distance} KM`}
             </Text>
             <View style={styles.content}>
-              <HTML source={{html: content}} />
+              <HTML source={{html: item.body}} />
             </View>
             <View style={styles.maps}>
               <MapView
@@ -83,7 +75,7 @@ function Detail(props) {
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                   }}
-                  title={'Taman Ayun'}
+                  title={item.title}
                   description={'Lorem ipsum'}
                   image={require('../assets/images/logo.png')}
                 />
