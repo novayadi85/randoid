@@ -25,7 +25,7 @@ const myPlace = {
 function Detail(props) {
   const {navigation, navigation : { state} } = props;
   const { params , params: { item, distance}} = state;
-
+  console.log(item)
   return ( 
     <View style={styles.container}>
       <HeaderWithActionButton
@@ -37,11 +37,10 @@ function Detail(props) {
         <ScrollView>
           <Image
             style={styles.image}
-            source={require('../assets/images/cardImage4.png')}
+            source={item.image}
           />
           <View style={[styles.wrapper]}>
             <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.subTitle}>Subtitle here</Text>
             <Text style={styles.actionButton}>
               <MaterialCommunityIconsIcon
                 name="map-marker"
@@ -76,7 +75,7 @@ function Detail(props) {
                     longitudeDelta: 0.0121,
                   }}
                   title={item.title}
-                  description={'Lorem ipsum'}
+                  description={''}
                   image={require('../assets/images/logo.png')}
                 />
                 <Geojson
@@ -141,10 +140,12 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 5,
     textAlign: 'left',
-    lineHeight: 16,
+    lineHeight: 18,
   },
   image: {
-    maxHeight: 300,
+    height: 300,
+    width: '100%',
+    maxHeight: 360
   },
   HeaderWithActionButton: {
     height: 20,

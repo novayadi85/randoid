@@ -20,13 +20,13 @@ const FeatureList = ({
       {values.map((value, index) => (
           <View key={index.toString()} style={styles.center}>
               <TouchableOpacity onPress={() => {
-                  navigation.navigate('Listing', { item : value})}}>
+                  navigation.navigate('Listing', { item : value, reload: 'false'})}}>
                   <View>
                   <Image
-                    source={require('../assets/images/cardImage4.png')}
+                    source={value.image}
                     style={styles.cardItemImagePlace}
                   />
-                  <Text style={styles.buttonLabel}>{value.title}</Text>
+                  <Text style={styles.buttonLabel}>{value.name}</Text>
                   </View>
               </TouchableOpacity>
             
@@ -44,13 +44,22 @@ const Featured = (props) => {
   const fetchCollections = async(param) => {
     const docs = [];
     const limit = (param === 'category') ? 5 : 6
-    db.collection(`root_collection/tourism/${param}`).orderBy('title', 'desc').limit(limit).get()
+    db.collection(`root_collection/tourism/${param}`).orderBy('name', 'desc').limit(limit).get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          // const { data: d} = doc
-          // d.image = (d.file.src) ? false : require('../assets/images/cardImage4.png')
-          setLists([...docs, doc.data()])
+          const item = doc.data();
+          item.docId = doc.id
+          item.image = require('../assets/images/cardImage4.png')
+          if('file' in item ){
+              const { src } = item.file 
+              if(src){
+                  item.image = {uri : src}
+              }
+          }
+          docs.push(item)
       })
+    }).then( () => {
+      setLists(docs)
     })
   }
 
@@ -113,10 +122,11 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   buttonLabel: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: 'coral',
     textAlign: 'center',
+    marginTop: 10
   },
   selectedLabel: {},
   label: {
