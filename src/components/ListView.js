@@ -5,7 +5,7 @@ import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommun
 import { nSQL } from '@nano-sql/core';
 import { getDistance } from '../utils/helper';
 export default function ListView(params) {
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState('');
   const [distance, setDistance] = useState(1);
   const {props} = params;
   const {item} = props;
@@ -30,6 +30,7 @@ export default function ListView(params) {
             'K',
           )
           setDistance(t)
+          setLocation(res)
         });
         
       }
@@ -57,6 +58,7 @@ export default function ListView(params) {
           onPress={() => props.navigation.navigate('Detail', {
             item: item,
             distance: distance,
+            location: location
           })}>
           <Text style={styles.titleStyle}>{item.title}</Text>
           <Text style={styles.subtitleStyle}>{subtitle}</Text>
