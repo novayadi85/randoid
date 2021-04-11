@@ -31,7 +31,9 @@ function Footer(props) {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => props.navigation.navigate('Listing')}
+        onPress={() => props.navigation.navigate('Listing', {
+          reload: 'true'
+        })}
         style={styles.btnWrapper3}>
         <MaterialIconsIcon name="lightbulb-outline" style={[styles.icon2 , {
               color: state.routeName == 'Listing' ||  state.routeName == 'Detail' ? '#007AFF' : '#9E9E9E',
@@ -41,7 +43,9 @@ function Footer(props) {
         }]}>Listing</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => props.navigation.navigate('About')}
+        onPress={() => props.navigation.navigate('Page', {
+          slug : 'about',
+        })}
         style={styles.btnWrapper2}>
         <MaterialCommunityIconsIcon
           name="radiobox-marked"

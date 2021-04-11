@@ -5,33 +5,39 @@ import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommun
 import { nSQL } from '@nano-sql/core';
 import { getDistance } from '../utils/helper';
 export default function ListView(params) {
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState('');
   const [distance, setDistance] = useState(1);
   const {props} = params;
   const {item} = props;
-  const {file} = item || { file : {src : false}}
-  const {src} = file
+  const {file, subtitle} = item ;
+  let img = require('../assets/images/cardImage4.png')
+  if(file){
+    const {src} = file
+    if(src){
+      img = {uri : src}
+    }
+  }
+
   useEffect(() => {
     nSQL("position").query('select').exec().then(result => {
-      const {coordinate} = item
-      if(coordinate) {
-        result.forEach(function(res){
+      const {latitude, longitude} = item
+      if(latitude && longitude) {
+        result.forEach(function({data:res}){
           const t = getDistance(
-            data.latitude,
-            data.longitude,
-            coordinate.latitude,
-            coordinate.longitude,
+            res,
+            latitude,
+            longitude,
             'K',
           )
+          setDistance(t)
+          setLocation(res)
         });
-        setDistance(t)
+        
       }
-      
-      setLocation(result)
     })
   }, [item])
 
-  const img = (src) ? {uri: src}  : require('../assets/images/cardImage4.png')
+ // const img = (src) ? {uri: src}  : require('../assets/images/cardImage4.png')
 
   return (
     <View style={[styles.container, params.style]}>
@@ -52,9 +58,10 @@ export default function ListView(params) {
           onPress={() => props.navigation.navigate('Detail', {
             item: item,
             distance: distance,
+            location: location
           })}>
           <Text style={styles.titleStyle}>{item.title}</Text>
-          <Text style={styles.subtitleStyle}>{'subtitle write here'}</Text>
+          <Text style={styles.subtitleStyle}>{subtitle}</Text>
           <Text style={styles.actionButton}>
             <MaterialCommunityIconsIcon
               name="map-marker"

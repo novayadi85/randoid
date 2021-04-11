@@ -1,21 +1,42 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {StyleSheet, View, Text, Image, ScrollView, RefreshControl} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {StyleSheet, View, Text, Image, ScrollView, RefreshControl, ActivityIndicator} from 'react-native';
 import Footer from '../components/Footer';
 import HeaderWithActionButton from '../components/HeaderWithActionButton';
 import {ListItem, Divider} from 'react-native-elements';
-const items = [
-{
-    title: 'Bagaimana Cara kerja aplikasi ini?',
-    link: '',
-},
-{
-    title: 'Apakah aplikasi ini bisa di install di android dibawah versi 6.0 ?',
-    link: '',
-},
-];
+import db from '../config';
 function Support(props) {
   const {navigation} = props;
+  const [items,setItems] = useState([])
+  const [loading,setLoading] = useState(true)
+  const getData = () => {
+    const collections = []
+    db.collection(`root_collection/tourism/pages`).where('type', '==', 'support').get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            const item = doc.data();
+            const { file } = item
+            let img = require('../assets/images/cardImage4.png')
+            if(file){
+                const {src} = file
+                if(src){
+                    img = {uri : src}
+                }
+            }
+            item.image = img;
+            collections.push(item)
+        })
+    }).then(() => {
+      setItems(collections)
+      setLoading(false);
+    })
+  }
+  
+  
+  useEffect(() => {
+    getData();
+  }, [])
+
   return (
     <View style={styles.container}>
       <HeaderWithActionButton
@@ -32,21 +53,30 @@ function Support(props) {
         <View style={styles.boxCard}>
           <Text style={styles.selamatDatang}>Support</Text>
           <Divider style={{backgroundColor: '#999'}} />
-          <ScrollView refreshControl={<RefreshControl onRefresh={''} />}>
-            {items.map((item, i) => {
-              return (
-                <ListItem
-                  key={i}
-                  bottomDivider
-                  onPress={() => navigation.navigate('Detail', i)}>
-                  <ListItem.Content>
-                    <ListItem.Title>{item.title}</ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              );
-            })}
-          </ScrollView>
+          {(!loading) ? (
+            <ScrollView refreshControl={<RefreshControl onRefresh={''} />}>
+              {items.map((item, i) => {
+                return (
+                  <ListItem
+                    key={i}
+                    bottomDivider
+                    onPress={() => navigation.navigate('Page', {
+                      slug : item.slug,
+                    })}>
+                    <ListItem.Content>
+                      <ListItem.Title>{item.title}</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                  </ListItem>
+                );
+              })}
+              </ScrollView>
+          ) : (
+            <View style={[styles.container, styles.horizontal]}>
+              <ActivityIndicator size="large" color="#000000" />
+              <Text style={{textAlign: 'center', marginTop: 10}}>Loading...</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
       <Footer navigation={navigation} style={styles.footer} />

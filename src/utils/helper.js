@@ -1,6 +1,10 @@
 import GetLocation from 'react-native-get-location';
 
-export const getDistance = (lat1, lon1, lat2, lon2, unit) => {
+export const getDistance = (location, lat2, lon2, unit) => {
+  const {latitude, longitude} = location
+  return __getDistance(latitude, longitude, lat2, lon2, unit)
+}
+export const __getDistance = (lat1, lon1, lat2, lon2, unit) => {
     var radlat1 = (Math.PI * lat1) / 180;
     var radlat2 = (Math.PI * lat2) / 180;
     var theta = lon1 - lon2;
@@ -16,11 +20,14 @@ export const getDistance = (lat1, lon1, lat2, lon2, unit) => {
     dist = dist * 60 * 1.1515;
     if (unit === 'K') {
       dist = dist * 1.609344;
+      dist = dist.toFixed(1);
     }
     if (unit === 'N') {
       dist = dist * 0.8684;
     }
-    return dist;
+
+    return  dist.toLocaleString()
+
 };
 
 export const position = async () => {
@@ -30,10 +37,36 @@ export const position = async () => {
     })
 }
 
-export const resort = (data) => {
-    return data.sort((a, b) => (a.distance > b.distance ? 1 : -1));
+export const resort = (data , type) => {
+    type = type || 'nearest';
+    if(type === 'nearest') return data.sort((a, b) => (a.distance > b.distance ? 1 : -1));
+    if(type === 'ASC') return data.sort((a, b) => a.title !== b.title ? a.title < b.title ? -1 : 1 : 0);
+    if(type === 'DESC') return data.sort((a, b) => a.title !== b.title ? a.title > b.title ? -1 : 1 : 0);
+
+    return data;
 }
 
+
+export const findSlug = (state) => {
+  try {
+    let id = false;
+    if(state){
+      const {params} = state;
+      if(params){
+        const {slug} = params;
+        
+        if(slug ){
+          return slug
+        }
+      }
+      return id;
+    }
+    return false;
+
+  } catch (e) {
+    return false;
+  }
+}
 
 export const today = () => {
     const months = [

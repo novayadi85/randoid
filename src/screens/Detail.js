@@ -1,30 +1,43 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {StyleSheet, View, Text, Image, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, Button, Linking} from 'react-native';
 import Footer from '../components/Footer';
 import HeaderWithActionButton from '../components/HeaderWithActionButton';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HTML from 'react-native-render-html';
 import MapView, {Marker, Geojson} from 'react-native-maps';
-const content = ``;
+import GetLocation from 'react-native-get-location';
 
-const myPlace = {
-  type: 'FeatureCollection',
-  features: [
-    {
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Point',
-        coordinates: [36.78825, -120.4324],
-      },
-    },
-  ],
-};
 
 function Detail(props) {
   const {navigation, navigation : { state} } = props;
-  const { params , params: { item, distance}} = state;
+  const { params , params: { item, distance, location}} = state;
+  const [myPlace, setMyPlace] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [linkGoogle, setLinkGoogle] = useState('');
+
+  useEffect(() => {
+    if(location){
+      const _geojson = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'Point',
+              coordinates: [location.latitude, location.longitude],
+            },
+          },
+        ],
+      };
+
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${item.latitude},${item.longitude}`;
+      setLinkGoogle(url)
+      setLoading(false)
+      setMyPlace(_geojson)
+    }
+  }, [])
 
   return ( 
     <View style={styles.container}>
@@ -34,14 +47,14 @@ function Detail(props) {
         navigation={navigation}
       />
       <View style={styles.Detail}>
-        <ScrollView>
+      {(!loading) ? (
+          <ScrollView>
           <Image
             style={styles.image}
-            source={require('../assets/images/cardImage4.png')}
+            source={item.image}
           />
           <View style={[styles.wrapper]}>
             <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.subTitle}>Subtitle here</Text>
             <Text style={styles.actionButton}>
               <MaterialCommunityIconsIcon
                 name="map-marker"
@@ -56,10 +69,10 @@ function Detail(props) {
               <MapView
                 style={styles.map}
                 initialRegion={{
-                  latitude: 37.78825,
-                  longitude: -122.4324,
-                  latitudeDelta: 0.015,
-                  longitudeDelta: 0.0121,
+                  latitude: Number(item.latitude),
+                  longitude: Number(item.longitude),
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
                 }}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
@@ -70,13 +83,13 @@ function Detail(props) {
                 zoomControlEnabled={true}>
                 <Marker
                   coordinate={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.015,
-                    longitudeDelta: 0.0121,
+                    latitude: Number(item.latitude),
+                    longitude: Number(item.longitude),
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
                   }}
                   title={item.title}
-                  description={'Lorem ipsum'}
+                  description={''}
                   image={require('../assets/images/logo.png')}
                 />
                 <Geojson
@@ -86,9 +99,33 @@ function Detail(props) {
                   strokeWidth={2}
                 />
               </MapView>
+              <View
+                style={{
+                  position: 'absolute', //use absolute position to show button on top of the map
+                  alignSelf: 'flex-end', //for align to right,
+                  bottom: '1%',
+                  width: '100%',
+                }}>
+                <Button
+                  style={{
+                    margin: 10,
+                  }}
+                  title="Open in Google Maps"
+                  onPress={(_props) => {
+                    return Linking.openURL(linkGoogle);
+                  }}
+                />
+              </View>
             </View>
           </View>
         </ScrollView>
+      ) : (
+        <View style={[styles.container]}>
+          <ActivityIndicator size="large" color="#000000" />
+          <Text style={{textAlign: 'center', marginTop: 10}}>Loading...</Text>
+        </View>
+      )}
+        
       </View>
       <Footer navigation={navigation} style={styles.footer} />
     </View>
@@ -104,7 +141,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 0,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -141,10 +178,12 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 5,
     textAlign: 'left',
-    lineHeight: 16,
+    lineHeight: 18,
   },
   image: {
-    maxHeight: 300,
+    height: 300,
+    width: '100%',
+    maxHeight: 360
   },
   HeaderWithActionButton: {
     height: 20,

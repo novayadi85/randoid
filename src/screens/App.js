@@ -3,30 +3,29 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   Text,
   ScrollView,
   ActivityIndicator,
-  TouchableOpacity,
+  ImageBackground
 } from 'react-native';
 import Footer from '../components/Footer';
-import Featured from '../components/Feature';
 import {today} from '../utils/helper.js'
+import FlexDirectionBasics from '../components/FlexDirectionBasics';
 function App(props) {
   const {navigation} = props;
   const whatToday = today();
   return (
     <View style={styles.container}>
       <ScrollView style={styles.boxCardHolder}>
-        <View style={styles.Timer}>
-          <Text style={styles.TimerText}>
-            {whatToday}
-          </Text>
-        </View>
-        <Image
-          source={require('../assets/images/03978901-ea26-4003-8568-1b83282ea587.jpg')}
-          style={styles.image}
-        />
+        <ImageBackground style={styles.image} source={require('../assets/images/03978901-ea26-4003-8568-1b83282ea587.jpg')}>
+          <View style={styles.Timer}>
+            <Text style={styles.TimerText}>
+              {whatToday}
+            </Text>
+            
+          </View>
+        </ImageBackground>
+        
         <View style={styles.boxCard}>
           <Text style={styles.selamatDatang}>
             Welcome to Tourism Apps v 1.0
@@ -34,13 +33,7 @@ function App(props) {
         </View>
         <View style={styles.FlexDirectionBasics}>
           <ActivityIndicator />
-          <TouchableOpacity onPress={() => {
-            navigation.navigate('Listing')}}>
-            <Text style={styles.viewAll}>
-            View all
-            </Text>
-          </TouchableOpacity>
-          <Featured navigation={navigation} type={'category'} headline={'Tourism Category'}/>
+          <FlexDirectionBasics navigation={navigation} headline={''}/>
         </View>
       </ScrollView>
       <Footer navigation={navigation} style={styles.footer} />
@@ -52,12 +45,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  imageBG: {
+    flex: 1,
+    justifyContent: "center"
+  },
   viewAll: {
     fontSize: 14,
     color: 'orange',
     position: 'absolute',
     right: 30,
-    top: 10
+    top: 10,
+    zIndex: 1000
   },
   header: {
     backgroundColor: '#fff',

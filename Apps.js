@@ -9,6 +9,7 @@ import Listing from './src/screens/Listing';
 import Support from './src/screens/Support';
 import Detail from './src/screens/Detail';
 import Provider from './src/components/Provider';
+import Page from './src/screens/Page';
 
 const DrawerNavigation = createDrawerNavigator({
   Home: App,
@@ -23,11 +24,11 @@ const StackNavigation = createStackNavigator(
       screen: DrawerNavigation
     },
     App: App,
-    About: About,
     Support: Support,
     Listing: Listing,
     Category: Category,
     Detail: Detail,
+    Page: Page,
   },
   {
     headerMode: 'none',

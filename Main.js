@@ -50,6 +50,7 @@ nSQL().createDatabase({
   nSQL("position").query("delete").exec().then(async() => {
       await position().then((res) => {
         const {latitude, longitude} = res;
+        console.log([latitude, longitude])
         nSQL("position").query('upsert', {
           data: {
             latitude, 
