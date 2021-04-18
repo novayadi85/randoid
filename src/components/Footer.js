@@ -76,9 +76,10 @@ function Footer(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(255,255,255,1)',
+    backgroundColor: '#000',
     flexDirection: 'row',
     width: '100%',
+    paddingBottom: 10
   },
   btnWrapper1: {
     flex: 1,

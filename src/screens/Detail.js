@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, Button, Linking} from 'react-native';
+import {StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, Button, Linking,SafeAreaView} from 'react-native';
 import Footer from '../components/Footer';
 import HeaderWithActionButton from '../components/HeaderWithActionButton';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -41,6 +41,8 @@ function Detail(props) {
 
   return ( 
     <View style={styles.container}>
+      <SafeAreaView style={{flex: 0}} />
+      <SafeAreaView style={{flex: 1}}>
       <HeaderWithActionButton
         style={styles.HeaderWithActionButton}
         title={item.title}
@@ -128,6 +130,8 @@ function Detail(props) {
         
       </View>
       <Footer navigation={navigation} style={styles.footer} />
+      </SafeAreaView>
+      
     </View>
   );
 }

@@ -7,7 +7,8 @@ import {
   Text,
   RefreshControl,
   ActivityIndicator,
-  Button
+  Button,
+  SafeAreaView
 } from 'react-native';
 import {
   Dropdown,
@@ -310,7 +311,9 @@ function Listing(props) {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.container}>
+      <SafeAreaView style={{flex: 0}} />
+      <SafeAreaView style={{flex: 1}}>
+      <View style={[styles.container]}>
           <SearchBar
               platform={'ios'}
               placeholder="Search..."
@@ -349,6 +352,7 @@ function Listing(props) {
                   color="#000"
                 />
               }
+              color="#ffffff"
               type="outline"
               iconRight={false}
               title="Filter"
@@ -356,10 +360,7 @@ function Listing(props) {
             />
           </View>
         </View>      
-        <Footer navigation={navigation} style={styles.footer} />
-        
-      </View>
-      <BottomModal
+        <BottomModal
           visible={modalVisible}
           onTouchOutside={toggleModal}
           height={0.8}
@@ -405,8 +406,8 @@ function Listing(props) {
                   />
                 </View>
                 <View style={{ flex: 1}}>
-                  <View>
-                    <Button onPress={() => {
+                  <View style={{backgroundColor:'#1f7cef'}}>
+                    <Button color="#ffffff" onPress={() => {
                       onFilter()
                     }} title="Apply"/>
                   </View>
@@ -417,6 +418,12 @@ function Listing(props) {
             </View>
           </ModalContent>
         </BottomModal>
+        <Footer navigation={navigation} style={styles.footer} />
+      </SafeAreaView>
+        
+        
+      </View>
+      
       </>
   );
 }
@@ -436,9 +443,11 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   buttonFilter: {
-    bottom: 0,
+    bottom: -40,
     left: 0,
-    margin: 10
+    margin: 10,
+    zIndex: 1000,
+    backgroundColor: '#1f7cef',
   },  
   btnIcon: {
     backgroundColor: 'transparent',
@@ -477,12 +486,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingBottom: 150,
-  },
-  HeaderWithActionButton: {
-    height: 20,
-    width: '100%',
-    marginTop: 26,
-    marginLeft: 0,
   },
   footer: {
     height: 73,

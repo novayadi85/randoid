@@ -63,3 +63,5 @@ firebase.json
 # Expo
 .expo/*
 web-build/
+ios/ipa
+ipa

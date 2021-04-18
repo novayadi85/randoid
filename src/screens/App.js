@@ -6,7 +6,8 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
-  ImageBackground
+  ImageBackground,
+  SafeAreaView
 } from 'react-native';
 import Footer from '../components/Footer';
 import {today} from '../utils/helper.js'
@@ -16,6 +17,8 @@ function App(props) {
   const whatToday = today();
   return (
     <View style={styles.container}>
+      <SafeAreaView style={{flex: 0}} />
+      <SafeAreaView style={{flex: 1}}>
       <ScrollView style={styles.boxCardHolder}>
         <ImageBackground style={styles.image} source={require('../assets/images/03978901-ea26-4003-8568-1b83282ea587.jpg')}>
           <View style={styles.Timer}>
@@ -32,11 +35,12 @@ function App(props) {
           </Text>
         </View>
         <View style={styles.FlexDirectionBasics}>
-          <ActivityIndicator />
           <FlexDirectionBasics navigation={navigation} headline={''}/>
         </View>
       </ScrollView>
-      <Footer navigation={navigation} style={styles.footer} />
+      <Footer navigation={navigation} style={styles.footer} /> 
+      </SafeAreaView>
+      
     </View>
   );
 }
@@ -79,6 +83,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 'auto',
     justifyContent: 'space-between',
+    marginTop: 25
   },  
   TimerText: {
     textAlign: 'center',
@@ -86,7 +91,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '700',
-    fontFamily:'roboto'
   },
   boxCardHolder: {
     backgroundColor: '#fff',
@@ -119,14 +123,12 @@ const styles = StyleSheet.create({
   },
   image_imageStyle: {},
   selamatDatang: {
-    fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 18,
     textAlign: 'center',
     marginTop: 10,
   },
   appsV10: {
-    fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 22,
     marginTop: 100,
@@ -149,6 +151,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     zIndex: 10000,
+    position: 'absolute'
   },
   rectStack: {
     width: '100%',

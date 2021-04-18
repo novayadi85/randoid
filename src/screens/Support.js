@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, View, Text, Image, ScrollView, RefreshControl, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, Text, Image, ScrollView, RefreshControl, ActivityIndicator, SafeAreaView} from 'react-native';
 import Footer from '../components/Footer';
 import HeaderWithActionButton from '../components/HeaderWithActionButton';
 import {ListItem, Divider} from 'react-native-elements';
@@ -39,6 +39,8 @@ function Support(props) {
 
   return (
     <View style={styles.container}>
+      <SafeAreaView style={{flex: 0}} />
+      <SafeAreaView style={{flex: 1}}>
       <HeaderWithActionButton
         style={styles.HeaderWithActionButton}
         title={'Support and Help'}
@@ -80,6 +82,8 @@ function Support(props) {
         </View>
       </ScrollView>
       <Footer navigation={navigation} style={styles.footer} />
+      </SafeAreaView>
+      
     </View>
   );
 }
@@ -139,7 +143,6 @@ const styles = StyleSheet.create({
     top: 65,
   },
   selamatDatang: {
-    fontFamily: 'roboto-regular',
     color: '#121212',
     fontSize: 22,
     textAlign: 'center',
