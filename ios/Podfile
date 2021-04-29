@@ -21,4 +21,5 @@ target 'dsid' do
   #  post_install do |installer|
   #    flipper_post_install(installer)
   #  end
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
 end

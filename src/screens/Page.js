@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, View, Text, Image, ScrollView, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, SafeAreaView} from 'react-native';
 import Footer from '../components/Footer';
 import HeaderWithActionButton from '../components/HeaderWithActionButton';
 import HTML from 'react-native-render-html';
@@ -46,6 +46,8 @@ function Page(props) {
 
   return (
     <View style={styles.container}>
+      <SafeAreaView style={{flex: 0}} />
+      <SafeAreaView style={{flex: 1}}>
       <HeaderWithActionButton
         style={styles.HeaderWithActionButton}
         title={detail.title}
@@ -75,6 +77,8 @@ function Page(props) {
         
       </View>
       <Footer navigation={navigation} style={styles.footer} />
+      </SafeAreaView>
+      
     </View>
   );
 }
