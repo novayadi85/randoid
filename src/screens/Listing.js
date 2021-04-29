@@ -200,11 +200,11 @@ function Listing(props) {
       }).then(() => {
         setCached(true)
         const __collections = resort(collection, valueSS);
+        setLists(__collections)
         console.log('load live', __collections.length )
         console.log('load inserts', inserts.length )
         console.log('load category', valueMS )
-        if(valueMS.length > 0) filterListing(__collections);
-        setLists(__collections)
+        if(valueMS.length > 0 || keyword.length > 0) filterListing(__collections);
       })
       
     }
@@ -266,24 +266,28 @@ function Listing(props) {
 
   const filterListing = (documents) => {
     const _query = keyword.toLowerCase()
-    const result = documents.filter((document) => {
-      let title = document.title.toLowerCase()
-      if(_query.length > 3 || valueMS.length > 0){
-        if(_query.length > 3 && title.includes(_query) || title == _query) {
-          return true
-        } 
-  
-        if(valueMS.length > 0 && valueMS.includes(document.category)) {
+    let results = documents
+    if (valueMS.length > 0) {
+      results = documents.filter(document => {
+        if (valueMS.length > 0 && valueMS.includes(document.category)) {
           return true
         }
+        else {
+          return false;
+        }
+      });
+    }
+
+    const result = results.filter(document => {
+      let title = document.title.toLowerCase()
+      console.log([_query, title, title.includes(_query)])
+      if(_query.length > 3 && (title.includes(_query) || title == _query)) {
+        return true
       }
-      else {
-        return true;
-      }
-    });
+      return false
+    })
 
     const docs = resort(result, valueSS)
-
     setLists(docs.length ? docs : [])
   }
 
@@ -329,17 +333,29 @@ function Listing(props) {
               <Text style={[styles.center]}>Loading...</Text>
             </View>
           ): (
-            <ScrollView refreshControl={<RefreshControl onRefresh={onRefresh} on/>}>
-            {lists.map((item, index) => {
-              return (
-                <ListListing
-                  item={item}
-                  navigation={navigation}
-                  key={index.toString()}
-                />
-              );
-            })}
-          </ScrollView>
+                <ScrollView refreshControl={<RefreshControl onRefresh={onRefresh} on />}>
+                  {(lists.length) ? (
+                    lists.map((item, index) => {
+                      return (
+                        <ListListing
+                          item={item}
+                          navigation={navigation}
+                          key={index.toString()}
+                        />
+                      );
+                    })
+                  ) : (
+                      <View style={[styles.notfound]}>
+                        <MaterialIconsIcon
+                          style={styles.notfoundIcon}
+                          name="error"
+                          size={15}
+                          color="#000"
+                        />
+                        <Text style={{textAlign: 'center'}}>Not found data here..</Text>
+                    </View>
+                  )}
+            </ScrollView>
           )}
          
           <View style={styles.buttonFilter}>
@@ -431,6 +447,19 @@ function Listing(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  notfound: {
+    margin: 10,
+    textAlign: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  notfoundIcon: {
+    backgroundColor: 'transparent',
+    color: '#616161',
+    fontSize: 100,
+    justifyContent: 'center',
+    textAlign: 'center',
   },
   modalTitle: {
     backgroundColor: '#fff',
